@@ -1,5 +1,7 @@
 # Flexxin
 
+https://github.com/Carti-drillman/Flexxin/issues/1#issue-2840685937
+
 Flexxin is a programming language that was created in C and Makefile.
 
 ## Features
