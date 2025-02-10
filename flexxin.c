@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <math.h> // New module added
 
 #define MAX_VARS 100
 #define MAX_LINE_LENGTH 100
@@ -47,10 +48,15 @@ void execute_line(char *line) {
     char cmd[MAX_LINE_LENGTH];
     char arg1[MAX_LINE_LENGTH];
     char arg2[MAX_LINE_LENGTH];
-    int value;
+    char arg3[MAX_LINE_LENGTH]; // New argument for strings
+    int value, end;
 
     if (sscanf(line, "var %s = %d", arg1, &value) == 2) {
         set_var(arg1, value);
+    } else if (sscanf(line, "var %s = \"%[^\"]\"", arg1, arg3) == 2) { // New syntax to define strings
+        strcpy(variables[var_count].name, arg1);
+        variables[var_count].value = atoi(arg3);
+        var_count++;
     } else if (sscanf(line, "print \"%[^\"]\"", arg1) == 1) {
         printf("%s\n", arg1);
     } else if (sscanf(line, "print %s", arg1) == 1) {
@@ -79,10 +85,8 @@ void execute_line(char *line) {
         }
     } else if (strncmp(line, "endif", 5) == 0) {
         // End of if-else block
-    } else if (sscanf(line, "for %s = %d to %d", arg1, &value, &cmd[0]) == 3) {
-        int start = value;
-        int end = cmd[0];
-        for (int i = start; i <= end; i++) {
+    } else if (sscanf(line, "for %s = %d to %d", arg1, &value, &end) == 3) { // Fixed format specifier issue
+        for (int i = value; i <= end; i++) {
             set_var(arg1, i);
             fgets(line, sizeof(line), stdin);
             execute_line(line);
