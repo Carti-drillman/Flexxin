@@ -105,6 +105,11 @@ void execute_line(char *line) {
 }
 
 int main(int argc, char *argv[]) {
+    if (argc > 1 && strcmp(argv[1], "-v") == 0) {
+        printf("Flexxin version 1.3\n");
+        return 0;
+    }
+
     if (argc != 2) {
         printf("Usage: %s <file.flex>\n", argv[0]);
         return 1;
